@@ -1,3 +1,4 @@
+// Global game object for holding data and logic
 const matchGame = {
   deck: [
     "fa-anchor",
@@ -16,32 +17,34 @@ const matchGame = {
     "fa-leaf",
     "fa-paper-plane-o",
     "fa-paper-plane-o"
-  ]
-};
+  ],
+  board: $(".deck"),
+  // Shuffle function from http://stackoverflow.com/a/2450976
+  shuffle(array) {
+    let currentIndex = array.length,
+      temporaryValue,
+      randomIndex;
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
 
-// Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
-  var currentIndex = array.length,
-    temporaryValue,
-    randomIndex;
-
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+    return array;
+  },
+  // Reset the playing board by shuffling the deck, clearing the board, and repopulating the board
+  reset() {
+    this.deck = this.shuffle(this.deck);
+    this.board.empty();
+    for (let card of this.deck) {
+      let deal = `<li class="card closed"><i class="fa ${card}"></i></li>`;
+      this.board.append(deal);
+    }
   }
-
-  return array;
-}
+};
 
 /*
  * set up the event listener for a card. If a card is clicked:
