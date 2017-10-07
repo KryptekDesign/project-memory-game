@@ -17,6 +17,7 @@ let deck = [
   "fa-paper-plane-o",
   "fa-paper-plane-o"
 ];
+let openCards = [];
 const board = $(".deck");
 
 // Reset the playing board by shuffling the deck, clearing the board, and repopulating the board
@@ -28,7 +29,7 @@ function reset() {
     board.append(deal);
   }
   // Handle clicking on cards
-  $("li").click(function() {
+  $(".deck").on("click", "li:not(.open, .match)", function() {
     flipCard($(this));
   });
 }
@@ -53,20 +54,34 @@ function shuffle(array) {
 // Animate card flipping
 function flipCard(card) {
   card.addClass("open show");
+  openCards.push(card);
+  if (openCards.length === 2) {
+    compareCards();
+  }
 }
 
-// Main logic for the game
-function matchGame() {
-  reset();
+// Compare two cards
+function compareCards() {
+  if (openCards[0].html() === openCards[1].html()) {
+    matchedCards();
+  } else {
+    mismatchedCards();
+  }
 }
+
+// Handle matched pairs
+function matchedCards() {}
+
+// Handle mismatched pairs
+function mismatchedCards() {}
 
 // Start the game
-$(document).ready(matchGame());
+$(document).ready(reset());
 
 /*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
+ * X  set up the event listener for a card. If a card is clicked:
+ * X   - display the card's symbol (put this functionality in another function that you call from this one)
+ * X   - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
  *  - if the list already has another card, check to see if the two cards match
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
