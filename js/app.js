@@ -1,54 +1,64 @@
-// Global game object for holding data and logic
-const matchGame = {
-  deck: [
-    "fa-anchor",
-    "fa-anchor",
-    "fa-bicycle",
-    "fa-bicycle",
-    "fa-bolt",
-    "fa-bolt",
-    "fa-bomb",
-    "fa-bomb",
-    "fa-cube",
-    "fa-cube",
-    "fa-diamond",
-    "fa-diamond",
-    "fa-leaf",
-    "fa-leaf",
-    "fa-paper-plane-o",
-    "fa-paper-plane-o"
-  ],
-  board: $(".deck"),
-  // Shuffle function from http://stackoverflow.com/a/2450976
-  shuffle(array) {
-    let currentIndex = array.length,
-      temporaryValue,
-      randomIndex;
+// Global game variables
+let deck = [
+  "fa-anchor",
+  "fa-anchor",
+  "fa-bicycle",
+  "fa-bicycle",
+  "fa-bolt",
+  "fa-bolt",
+  "fa-bomb",
+  "fa-bomb",
+  "fa-cube",
+  "fa-cube",
+  "fa-diamond",
+  "fa-diamond",
+  "fa-leaf",
+  "fa-leaf",
+  "fa-paper-plane-o",
+  "fa-paper-plane-o"
+];
+const board = $(".deck");
 
-    while (currentIndex !== 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
+// Shuffle function from http://stackoverflow.com/a/2450976
+function shuffle(array) {
+  let currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
 
-    return array;
-  },
-  // Animate card flipping
-  flipCard(card) {
-    card.addClass("open show");
-  },
-  // Reset the playing board by shuffling the deck, clearing the board, and repopulating the board
-  reset() {
-    this.deck = this.shuffle(this.deck);
-    this.board.empty();
-    for (let card of this.deck) {
-      let deal = `<li class="card closed"><i class="fa ${card}"></i></li>`;
-      this.board.append(deal);
-    }
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
   }
-};
+
+  return array;
+}
+
+// Reset the playing board by shuffling the deck, clearing the board, and repopulating the board
+function reset() {
+  deck = shuffle(deck);
+  board.empty();
+  for (let card of deck) {
+    let deal = `<li class="card closed"><i class="fa ${card}"></i></li>`;
+    board.append(deal);
+  }
+  // Handle clicking on cards
+  $("li")
+    .not(".open")
+    .click(flipCard($(this)));
+}
+
+// Animate card flipping
+function flipCard(card) {
+  card.addClass("open show");
+}
+
+// Main game logic
+function matchGame() {
+  reset();
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -60,9 +70,6 @@ const matchGame = {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
 // Start game
-$(document).ready(matchGame.reset());
-// Handle clicking on cards
-$("li")
-  .not(".open")
-  .click(matchGame.flipCard($(this)));
+$(document).ready(matchGame());
