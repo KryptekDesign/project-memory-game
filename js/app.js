@@ -35,6 +35,10 @@ const matchGame = {
 
     return array;
   },
+  // Animate card flipping
+  flipCard(card) {
+    card.addClass("open show");
+  },
   // Reset the playing board by shuffling the deck, clearing the board, and repopulating the board
   reset() {
     this.deck = this.shuffle(this.deck);
@@ -56,3 +60,9 @@ const matchGame = {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+// Start game
+$(document).ready(matchGame.reset());
+// Handle clicking on cards
+$("li")
+  .not(".open")
+  .click(matchGame.flipCard($(this)));
