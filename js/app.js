@@ -1,4 +1,4 @@
-// Global game variables
+// Create game variables used globally
 let deck = [
   "fa-anchor",
   "fa-anchor",
@@ -19,6 +19,20 @@ let deck = [
 ];
 const board = $(".deck");
 
+// Reset the playing board by shuffling the deck, clearing the board, and repopulating the board
+function reset() {
+  deck = shuffle(deck);
+  board.empty();
+  for (let card of deck) {
+    let deal = `<li class="card"><i class="fa ${card}"></i></li>`;
+    board.append(deal);
+  }
+  // Handle clicking on cards
+  $("li").click(function() {
+    flipCard($(this));
+  });
+}
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
   let currentIndex = array.length,
@@ -36,29 +50,18 @@ function shuffle(array) {
   return array;
 }
 
-// Reset the playing board by shuffling the deck, clearing the board, and repopulating the board
-function reset() {
-  deck = shuffle(deck);
-  board.empty();
-  for (let card of deck) {
-    let deal = `<li class="card closed"><i class="fa ${card}"></i></li>`;
-    board.append(deal);
-  }
-  // Handle clicking on cards
-  $("li")
-    .not(".open")
-    .click(flipCard($(this)));
-}
-
 // Animate card flipping
 function flipCard(card) {
   card.addClass("open show");
 }
 
-// Main game logic
+// Main logic for the game
 function matchGame() {
   reset();
 }
+
+// Start the game
+$(document).ready(matchGame());
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -70,6 +73,3 @@ function matchGame() {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-
-// Start game
-$(document).ready(matchGame());
