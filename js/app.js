@@ -96,9 +96,9 @@ function compareCards() {
 // Handle matched pairs.
 function matchedCards() {
   for (let card of openCards) {
+    card.addClass("match animated bounce");
     setTimeout(function() {
-      card.removeClass("open show");
-      card.addClass("match");
+      card.removeClass("open show animated bounce");
     }, 600);
     matches++;
   }
@@ -108,8 +108,9 @@ function matchedCards() {
 // Handle mismatched pairs.
 function mismatchedCards() {
   for (let card of openCards) {
+    card.addClass("wrong animated tada");
     setTimeout(function() {
-      card.removeClass("open show");
+      card.removeClass("open show wrong animated tada");
     }, 600);
   }
   cleanUp();

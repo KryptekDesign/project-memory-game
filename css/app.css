@@ -67,7 +67,7 @@ h1 {
 
 .deck .card.open {
   transform: rotateY(0);
-  transition: all 0.2s;
+  transition: all 0.3s;
   background: #02b3e4;
   cursor: default;
 }
@@ -80,6 +80,10 @@ h1 {
   cursor: default;
   background: #02ccba;
   font-size: 33px;
+}
+
+.deck .card.wrong {
+  background: #c9302c;
 }
 
 /*
