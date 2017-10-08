@@ -26,7 +26,7 @@ const movesText = $(".moves");
 let moves = 0;
 const timerText = $(".timer");
 let seconds = 60;
-let gameTimer = setInterval(subtractTime, 1000);
+let gameTimer = undefined;
 const restartButton = $(".restart");
 
 // Reset the playing board by shuffling the deck, clearing the board, and repopulating the board.
@@ -40,10 +40,12 @@ function reset() {
   movesText.text("0");
   moves = 0;
   seconds = 60;
+  timerText.text(seconds);
   for (let card of deck) {
     let deal = `<li class="card"><i class="fa ${card}"></i></li>`;
     board.append(deal);
   }
+  gameTimer = setInterval(subtractTime, 1000);
 }
 
 // Timekeeping
@@ -149,7 +151,7 @@ function win() {
 }
 
 function lose(message) {
-  alert(`You lose!\n${message}`);
+  alert(`You lost this time!\n${message}`);
   clearInterval(gameTimer);
 }
 
