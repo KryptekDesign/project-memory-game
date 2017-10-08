@@ -32,7 +32,7 @@ function reset() {
     board.append(deal);
   }
   // Handle clicking on cards. Disable on open and matched cards.
-  $(".deck").on("click", "li:not(.open, .match)", function() {
+  board.on("click", "li:not(.open, .match)", function() {
     flipCard($(this));
   });
 }
@@ -98,6 +98,18 @@ function cleanUp() {
   openCards.length = 0;
   moves++;
   movesText.text(moves);
+  console.log("Before_ " + moves + " : " + $(".card.match").length + ", " + deck.length);
+  checkWin();
+}
+
+// Check for winning conditions
+function checkWin() {
+  console.log("Inside_ " + moves + " : " + $(".card.match").length + ", " + deck.length);
+  if ($(".card.match").length === deck.length) {
+    console.log("Alert!");
+    alert("You win!");
+  }
+  console.log("After_  " + moves + " : " + $(".card.match").length + ", " + deck.length);
 }
 
 // Start the game
@@ -110,6 +122,7 @@ $(document).ready(reset());
  * X   - if the list already has another card, check to see if the two cards match
  * X     + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  * X     + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
+ * X     + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+// 12 moves = 3 stars, 16 moves = 2 stars, 20 moves = 1 star, 24 moves = lose
