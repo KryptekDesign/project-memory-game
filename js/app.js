@@ -1,4 +1,4 @@
-// Create game variables used globally
+// Create game variables used globally.
 let deck = [
   "fa-anchor",
   "fa-anchor",
@@ -20,21 +20,28 @@ let deck = [
 let openCards = [];
 const board = $(".deck");
 const movesText = $(".moves");
+const restartButton = $(".restart");
 let moves = 0;
 
-// Reset the playing board by shuffling the deck, clearing the board, and repopulating the board
+// Reset the playing board by shuffling the deck, clearing the board, and repopulating the board.
 function reset() {
   deck = shuffle(deck);
+  openCards.length = 0;
   board.empty();
   movesText.text("0");
+  moves = 0;
   for (let card of deck) {
     let deal = `<li class="card"><i class="fa ${card}"></i></li>`;
     board.append(deal);
   }
-  // Handle clicking on cards. Disable on open and matched cards.
-  board.on("click", "li:not(.open, .match)", function() {
-    flipCard($(this));
-  });
+  console.log(
+    "After Reset   _ " +
+      moves +
+      " : " +
+      $(".card.match").length +
+      ", " +
+      deck.length
+  );
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -54,7 +61,7 @@ function shuffle(array) {
   return array;
 }
 
-// Animate card flipping
+// Animate card flipping.
 function flipCard(card) {
   card.addClass("open show");
   openCards.push(card);
@@ -63,7 +70,7 @@ function flipCard(card) {
   }
 }
 
-// Compare two cards
+// Compare two cards.
 function compareCards() {
   if (openCards[0].html() === openCards[1].html()) {
     matchedCards();
@@ -72,7 +79,7 @@ function compareCards() {
   }
 }
 
-// Handle matched pairs
+// Handle matched pairs.
 function matchedCards() {
   for (let card of openCards) {
     setTimeout(function() {
@@ -83,7 +90,7 @@ function matchedCards() {
   cleanUp();
 }
 
-// Handle mismatched pairs
+// Handle mismatched pairs.
 function mismatchedCards() {
   for (let card of openCards) {
     setTimeout(function() {
@@ -93,27 +100,57 @@ function mismatchedCards() {
   cleanUp();
 }
 
-// Clean up after a move is made
+// Clean up after a move is made.
 function cleanUp() {
   openCards.length = 0;
   moves++;
   movesText.text(moves);
-  console.log("Before_ " + moves + " : " + $(".card.match").length + ", " + deck.length);
+  console.log(
+    "Before Clean  _ " +
+      moves +
+      " : " +
+      $(".card.match").length +
+      ", " +
+      deck.length
+  );
   checkWin();
 }
 
-// Check for winning conditions
+// Check for winning conditions.
 function checkWin() {
-  console.log("Inside_ " + moves + " : " + $(".card.match").length + ", " + deck.length);
+  console.log(
+    "Inside Clean  _ " +
+      moves +
+      " : " +
+      $(".card.match").length +
+      ", " +
+      deck.length
+  );
   if ($(".card.match").length === deck.length) {
     console.log("Alert!");
     alert("You win!");
   }
-  console.log("After_  " + moves + " : " + $(".card.match").length + ", " + deck.length);
+  console.log(
+    "After Clean   _ " +
+      moves +
+      " : " +
+      $(".card.match").length +
+      ", " +
+      deck.length
+  );
 }
 
 // Start the game
-$(document).ready(reset());
+$(document).ready(function() {
+  // Handle clicking on cards. Disable on open and matched cards.
+  board.on("click", "li:not(.open, .match)", function() {
+    flipCard($(this));
+  });
+  // Handle clicking on the restart button.
+  restartButton.click(reset);
+  // Initialize the board.
+  reset();
+});
 
 /*
  * X  set up the event listener for a card. If a card is clicked:
