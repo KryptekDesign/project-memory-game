@@ -23,6 +23,9 @@ const stars = $(".fa-star");
 let starCount = 3;
 const movesText = $(".moves");
 let moves = 0;
+const timerText = $(".timer");
+let seconds = 60;
+let gameTimer = setInterval(subtractTime, 1000);
 const restartButton = $(".restart");
 
 // Reset the playing board by shuffling the deck, clearing the board, and repopulating the board.
@@ -34,6 +37,7 @@ function reset() {
   starCount = 3;
   movesText.text("0");
   moves = 0;
+  seconds = 60;
   for (let card of deck) {
     let deal = `<li class="card"><i class="fa ${card}"></i></li>`;
     board.append(deal);
@@ -46,6 +50,16 @@ function reset() {
       ", " +
       deck.length
   );
+}
+
+// Timekeeping
+function subtractTime() {
+  seconds--;
+  timerText.text(seconds);
+  if (seconds === 0) {
+    clearInterval(gameTimer);
+    // end game
+  }
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -136,7 +150,7 @@ function tallyStars() {
   }
 }
 
-// Check for winning conditions.
+// Check current conditions.
 function getUpdate() {
   console.log(
     "Inside Clean  _ " +

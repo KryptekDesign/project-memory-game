@@ -90,6 +90,7 @@ h1 {
   text-align: left;
   width: 345px;
   margin-bottom: 10px;
+  position: relative;
 }
 
 .score-panel .stars {
@@ -106,6 +107,13 @@ h1 {
 
 .score-panel .stars .fa-star.filled {
   color: #ffcc00;
+}
+
+.score-panel .timer {
+  display: inline-block;
+  position: absolute;
+  left: calc(50% - 10px);
+  font-weight: bold;
 }
 
 .score-panel .restart {
