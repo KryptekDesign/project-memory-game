@@ -28,6 +28,7 @@ const timerText = $(".timer");
 let seconds = 60;
 let gameTimer = undefined;
 const restartButton = $(".restart");
+let message = "";
 
 // Reset the playing board by shuffling the deck, clearing the board, and repopulating the board.
 function reset() {
@@ -139,31 +140,38 @@ function cleanUp() {
   movesText.text(moves);
   tallyStars();
   if (matches === deck.length) {
-    win();
+    win(`It took you ${60 - seconds} seconds and you have ${starCount} stars!`);
   }
 }
 
-function win() {
+function win(message) {
   clearInterval(gameTimer);
   setTimeout(function() {
-    alert(`You won in ${60 - seconds} seconds!\nYou have ${starCount} stars!`);
-    playAgain();
-  }, 600);
+    swal({
+      titleText: "Congrats! You won!",
+      text: message + "\nWould you like to play again?",
+      type: "success",
+      showCancelButton: true,
+      confirmButtonColor: "#02ccba",
+      cancelButtonColor: "#c9302c",
+      confirmButtonText: "Yes!"
+    }).then(reset);
+  }, 1000);
 }
 
 function lose(message) {
   clearInterval(gameTimer);
   setTimeout(function() {
-    alert(`You lost this time!\n${message}`);
-    playAgain();
-  }, 600);
-}
-
-// Play again?
-function playAgain() {
-  if (confirm("Would you like to play again?")) {
-    reset();
-  }
+    swal({
+      titleText: "You lost this time!",
+      text: message + "\nWould you like to play again?",
+      type: "error",
+      showCancelButton: true,
+      confirmButtonColor: "#02ccba",
+      cancelButtonColor: "#c9302c",
+      confirmButtonText: "Yes!"
+    }).then(reset);
+  }, 1000);
 }
 
 // Start the game
