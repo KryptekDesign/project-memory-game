@@ -146,12 +146,17 @@ function cleanUp() {
 function win() {
   clearInterval(gameTimer);
   alert(`You won in ${60 - seconds} seconds!\nYou have ${starCount} stars!`);
+  if (confirm("Would you like to play again?")) {
+    reset();
+  }
 }
 
 function lose(message) {
   clearInterval(gameTimer);
-  board.off("click");
   alert(`You lost this time!\n${message}`);
+  if (confirm("Would you like to play again?")) {
+    reset();
+  }
 }
 
 // Start the game
