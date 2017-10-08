@@ -19,11 +19,14 @@ let deck = [
 ];
 let openCards = [];
 const board = $(".deck");
+const movesText = $(".moves");
+let moves = 0;
 
 // Reset the playing board by shuffling the deck, clearing the board, and repopulating the board
 function reset() {
   deck = shuffle(deck);
   board.empty();
+  movesText.text("0");
   for (let card of deck) {
     let deal = `<li class="card"><i class="fa ${card}"></i></li>`;
     board.append(deal);
@@ -75,9 +78,9 @@ function matchedCards() {
     setTimeout(function() {
       card.removeClass("open show");
       card.addClass("match");
-    }, 1000);
+    }, 600);
   }
-  openCards.length = 0;
+  cleanUp();
 }
 
 // Handle mismatched pairs
@@ -85,9 +88,16 @@ function mismatchedCards() {
   for (let card of openCards) {
     setTimeout(function() {
       card.removeClass("open show");
-    }, 1000);
+    }, 600);
   }
+  cleanUp();
+}
+
+// Clean up after a move is made
+function cleanUp() {
   openCards.length = 0;
+  moves++;
+  movesText.text(moves);
 }
 
 // Start the game
@@ -98,8 +108,8 @@ $(document).ready(reset());
  * X   - display the card's symbol (put this functionality in another function that you call from this one)
  * X   - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
  * X   - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
+ * X     + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
+ * X     + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
