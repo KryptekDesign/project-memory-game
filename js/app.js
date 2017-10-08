@@ -145,15 +145,22 @@ function cleanUp() {
 
 function win() {
   clearInterval(gameTimer);
-  alert(`You won in ${60 - seconds} seconds!\nYou have ${starCount} stars!`);
-  if (confirm("Would you like to play again?")) {
-    reset();
-  }
+  setTimeout(function() {
+    alert(`You won in ${60 - seconds} seconds!\nYou have ${starCount} stars!`);
+    playAgain();
+  }, 600);
 }
 
 function lose(message) {
   clearInterval(gameTimer);
-  alert(`You lost this time!\n${message}`);
+  setTimeout(function() {
+    alert(`You lost this time!\n${message}`);
+    playAgain();
+  }, 600);
+}
+
+// Play again?
+function playAgain() {
   if (confirm("Would you like to play again?")) {
     reset();
   }

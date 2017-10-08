@@ -1,4 +1,4 @@
-# Memory Game Project
+# Memory Game (Concentration)
 
 ## Table of Contents
 
@@ -7,11 +7,19 @@
 
 ## Instructions
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+This is browser-based version of the classic kids card game, requiring memory and observation to win.
 
-To get started, open `js/app.js` and start building out the app's functionality
+Eight pairs of cards are randomly dealt face down. The objective is to match pairs of cards.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+You take turns by flipping two cards and seeing if they match. Matches will stay on the board and mismatches will be flipped back over.
+
+The game ends when you run out of moves or match all the cards.
+
+This particular version gives you sixty seconds or twenty-five moves to accomplish the goal.
+
+Have fun!
+
+(Note: This was a student project and part of the Udacity Front End Developer Drgree program.)
 
 ## Contributing
 
