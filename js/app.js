@@ -19,15 +19,19 @@ let deck = [
 ];
 let openCards = [];
 const board = $(".deck");
+const stars = $(".fa-star");
+let starCount = 3;
 const movesText = $(".moves");
-const restartButton = $(".restart");
 let moves = 0;
+const restartButton = $(".restart");
 
 // Reset the playing board by shuffling the deck, clearing the board, and repopulating the board.
 function reset() {
   deck = shuffle(deck);
   openCards.length = 0;
   board.empty();
+  stars.addClass("filled");
+  starCount = 3;
   movesText.text("0");
   moves = 0;
   for (let card of deck) {
@@ -113,11 +117,27 @@ function cleanUp() {
       ", " +
       deck.length
   );
-  checkWin();
+  getUpdate();
+}
+
+// 12 moves = 3 stars, 16 moves = 2 stars, 20 moves = 1 star, 24 moves = lose
+function tallyStars() {
+  if (moves === 25) {
+    // end game
+  } else if (moves === 21) {
+    stars.eq(0).removeClass("filled");
+    starCount--;
+  } else if (moves === 17) {
+    stars.eq(1).removeClass("filled");
+    starCount--;
+  } else if (moves === 13) {
+    stars.eq(2).removeClass("filled");
+    starCount--;
+  }
 }
 
 // Check for winning conditions.
-function checkWin() {
+function getUpdate() {
   console.log(
     "Inside Clean  _ " +
       moves +
@@ -126,6 +146,7 @@ function checkWin() {
       ", " +
       deck.length
   );
+  tallyStars();
   if ($(".card.match").length === deck.length) {
     console.log("Alert!");
     alert("You win!");
@@ -162,4 +183,3 @@ $(document).ready(function() {
  * X     + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-// 12 moves = 3 stars, 16 moves = 2 stars, 20 moves = 1 star, 24 moves = lose
