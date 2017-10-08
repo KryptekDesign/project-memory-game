@@ -18,6 +18,7 @@ let deck = [
   "fa-paper-plane-o"
 ];
 let openCards = [];
+let matches = 0;
 const board = $(".deck");
 const stars = $(".fa-star");
 let starCount = 3;
@@ -32,6 +33,7 @@ const restartButton = $(".restart");
 function reset() {
   deck = shuffle(deck);
   openCards.length = 0;
+  matches = 0;
   board.empty();
   stars.addClass("filled");
   starCount = 3;
@@ -42,14 +44,6 @@ function reset() {
     let deal = `<li class="card"><i class="fa ${card}"></i></li>`;
     board.append(deal);
   }
-  console.log(
-    "After Reset   _ " +
-      moves +
-      " : " +
-      $(".card.match").length +
-      ", " +
-      deck.length
-  );
 }
 
 // Timekeeping
@@ -58,7 +52,7 @@ function subtractTime() {
   timerText.text(seconds);
   if (seconds === 0) {
     clearInterval(gameTimer);
-    // end game
+    lose("You've run out of time!");
   }
 }
 
@@ -104,6 +98,7 @@ function matchedCards() {
       card.removeClass("open show");
       card.addClass("match");
     }, 600);
+    matches++;
   }
   cleanUp();
 }
@@ -118,26 +113,10 @@ function mismatchedCards() {
   cleanUp();
 }
 
-// Clean up after a move is made.
-function cleanUp() {
-  openCards.length = 0;
-  moves++;
-  movesText.text(moves);
-  console.log(
-    "Before Clean  _ " +
-      moves +
-      " : " +
-      $(".card.match").length +
-      ", " +
-      deck.length
-  );
-  getUpdate();
-}
-
 // 12 moves = 3 stars, 16 moves = 2 stars, 20 moves = 1 star, 24 moves = lose
 function tallyStars() {
   if (moves === 25) {
-    // end game
+    lose("You've used up all your moves!");
   } else if (moves === 21) {
     stars.eq(0).removeClass("filled");
     starCount--;
@@ -150,29 +129,28 @@ function tallyStars() {
   }
 }
 
-// Check current conditions.
-function getUpdate() {
-  console.log(
-    "Inside Clean  _ " +
-      moves +
-      " : " +
-      $(".card.match").length +
-      ", " +
-      deck.length
-  );
+// Clean up after a move is made.
+function cleanUp() {
+  openCards.length = 0;
+  moves++;
+  movesText.text(moves);
   tallyStars();
-  if ($(".card.match").length === deck.length) {
-    console.log("Alert!");
-    alert("You win!");
+  if (matches === deck.length) {
+    win();
   }
-  console.log(
-    "After Clean   _ " +
-      moves +
-      " : " +
-      $(".card.match").length +
-      ", " +
-      deck.length
+}
+
+function win() {
+  alert(
+    `You won in ${60 -
+      seconds} seconds!\nYou've been awarded ${starCount} stars!`
   );
+  clearInterval(gameTimer);
+}
+
+function lose(message) {
+  alert(`You lose!\n${message}`);
+  clearInterval(gameTimer);
 }
 
 // Start the game
@@ -186,14 +164,3 @@ $(document).ready(function() {
   // Initialize the board.
   reset();
 });
-
-/*
- * X  set up the event listener for a card. If a card is clicked:
- * X   - display the card's symbol (put this functionality in another function that you call from this one)
- * X   - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- * X   - if the list already has another card, check to see if the two cards match
- * X     + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- * X     + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- * X     + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
