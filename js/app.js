@@ -25,13 +25,13 @@ let starCount = 3;
 const movesText = $(".moves");
 let moves = 0;
 const timerText = $(".timer");
-let seconds = 60;
+let seconds = 0;
 let gameTimer = undefined;
 const restartButton = $(".restart");
-let message = "";
 
 // Reset the playing board by shuffling the deck, clearing the board, and repopulating the board.
 function reset() {
+  clearInterval(gameTimer);
   deck = shuffle(deck);
   openCards.length = 0;
   matches = 0;
@@ -40,23 +40,32 @@ function reset() {
   starCount = 3;
   movesText.text("0");
   moves = 0;
-  seconds = 60;
+  seconds = 0;
   timerText.text(seconds);
   for (let card of deck) {
     let deal = `<li class="card"><i class="fa ${card}"></i></li>`;
     board.append(deal);
   }
-  gameTimer = setInterval(subtractTime, 1000);
+  gameTimer = setInterval(addTime, 1000);
 }
 
 // Timekeeping
-function subtractTime() {
-  seconds--;
+function addTime() {
+  seconds++;
   timerText.text(seconds);
-  if (seconds === 0) {
-    clearInterval(gameTimer);
-    lose("You've run out of time!");
-  }
+}
+
+// Convert seconds to HMS from https://stackoverflow.com/a/37096512
+function convertTime(d) {
+  d = Number(d);
+  let h = Math.floor(d / 3600);
+  let m = Math.floor((d % 3600) / 60);
+  let s = Math.floor((d % 3600) % 60);
+
+  let hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+  let mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+  let sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+  return hDisplay + mDisplay + sDisplay;
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -138,23 +147,27 @@ function cleanUp() {
   movesText.text(moves);
   tallyStars();
   if (matches === deck.length) {
-    win(`It took you ${60 - seconds} seconds and you have ${starCount} stars!`);
+    endGame();
   }
 }
 
 // Dialog giving statistics after completing the game.
-function endGame(message) {
+function endGame() {
   clearInterval(gameTimer);
   setTimeout(function() {
     swal({
-      titleText: "Congratulations!",
-      text: message + "\nWould you like to play again?",
+      title: "Congratulations!",
+      html: `<p>You made ${moves} moves in ${convertTime(
+        seconds
+      )}. You won ${starCount} stars!</p><p>Would you like to play again?</p>`,
       type: "success",
       showCancelButton: true,
       confirmButtonColor: "#02ccba",
       cancelButtonColor: "#c9302c",
       confirmButtonText: "Yes!"
-    }).then(reset);
+    })
+      .then(reset)
+      .catch(swal.noop);
   }, 1000);
 }
 
