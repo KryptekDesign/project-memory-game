@@ -143,16 +143,14 @@ function cleanUp() {
 }
 
 function win() {
-  alert(
-    `You won in ${60 -
-      seconds} seconds!\nYou've been awarded ${starCount} stars!`
-  );
   clearInterval(gameTimer);
+  alert(`You won in ${60 - seconds} seconds!\nYou have ${starCount} stars!`);
 }
 
 function lose(message) {
-  alert(`You lost this time!\n${message}`);
   clearInterval(gameTimer);
+  board.off("click");
+  alert(`You lost this time!\n${message}`);
 }
 
 // Start the game
