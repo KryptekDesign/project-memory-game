@@ -117,11 +117,9 @@ function mismatchedCards() {
   cleanUp();
 }
 
-// 12 moves = 3 stars, 16 moves = 2 stars, 20 moves = 1 star, 24 moves = lose
+// 12 moves = 3 stars, 16 moves = 2 stars, 20 moves = 1 star, 24 moves = none
 function tallyStars() {
-  if (moves === 25) {
-    lose("You've used up all your moves!");
-  } else if (moves === 21) {
+  if (moves === 21) {
     stars.eq(0).removeClass("filled");
     starCount--;
   } else if (moves === 17) {
@@ -144,28 +142,14 @@ function cleanUp() {
   }
 }
 
-function win(message) {
+// Dialog giving statistics after completing the game.
+function endGame(message) {
   clearInterval(gameTimer);
   setTimeout(function() {
     swal({
-      titleText: "Congrats! You won!",
+      titleText: "Congratulations!",
       text: message + "\nWould you like to play again?",
       type: "success",
-      showCancelButton: true,
-      confirmButtonColor: "#02ccba",
-      cancelButtonColor: "#c9302c",
-      confirmButtonText: "Yes!"
-    }).then(reset);
-  }, 1000);
-}
-
-function lose(message) {
-  clearInterval(gameTimer);
-  setTimeout(function() {
-    swal({
-      titleText: "You lost this time!",
-      text: message + "\nWould you like to play again?",
-      type: "error",
       showCancelButton: true,
       confirmButtonColor: "#02ccba",
       cancelButtonColor: "#c9302c",
